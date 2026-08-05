@@ -7,7 +7,7 @@ import numpy as np
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
-# Function for join angle calculations
+# Function for joint angle calculations
 def calculate_angle(a,b,c):
     a = np.array(a) # First
     b = np.array(b) # Mid
@@ -24,6 +24,11 @@ def calculate_angle(a,b,c):
 
 # Setup Video Feed
 cap = cv2.VideoCapture(0)
+
+# Curl counter variables
+counter = 0
+stage = None
+
 # Setup mediapipe instance
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while cap.isOpened():
@@ -58,9 +63,18 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                 )
 
+            # Curl counter logic
+            if angle > 160:
+                stage = "down"
+            if angle < 30 and stage == 'down':
+                stage = "up"
+                counter += 1
+                print(counter)
 
-        except Exception as e:
-            print("DEBUG ERROR:", e)
+
+        except:
+            pass
+
 
         # Render detections
         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
