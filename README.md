@@ -19,4 +19,4 @@ This repository documents my implementation of real-time human pose tracking to 
 - MediaPipe
 - NumPy
 
-![Demo]("C:\Users\nolan\Downloads\curl-counter-demo.gif")
+![Demo]("curl-counter-demo.gif")
